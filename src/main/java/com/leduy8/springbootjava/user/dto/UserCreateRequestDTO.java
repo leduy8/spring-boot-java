@@ -6,8 +6,4 @@ import lombok.Builder;
 
 @Builder
 public record UserCreateRequestDTO(
-        @NotBlank String name,
-        @Email @NotBlank String email,
-        @NotBlank String password
-) {}
-
+    @NotBlank String name, @Email @NotBlank String email, @NotBlank String password) {}

@@ -23,47 +23,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserCreateRequestDTO request) {
-        if (userService.existsByEmail(request.email())) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(userService.createUser(request));
+  @PostMapping
+  public ResponseEntity<UserResponseDTO> createUser(
+      @Valid @RequestBody UserCreateRequestDTO request) {
+    if (userService.existsByEmail(request.email())) {
+      return ResponseEntity.badRequest().build();
     }
+    return ResponseEntity.ok(userService.createUser(request));
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+    return userService
+        .getUserById(id)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
+  }
 
-    @GetMapping
-    public ResponseEntity<PaginatedResponseDTO<UserResponseDTO>> getUsers(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String orderBy
-    ) {
-        return ResponseEntity.ok(userService.getUsers(page - 1, size, orderBy));
-    }
+  @GetMapping
+  public ResponseEntity<PaginatedResponseDTO<UserResponseDTO>> getUsers(
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "id") String orderBy) {
+    return ResponseEntity.ok(userService.getUsers(page - 1, size, orderBy));
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequestDTO request) {
-        try {
-            return ResponseEntity.ok(userService.updateUser(id, request));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+  @PutMapping("/{id}")
+  public ResponseEntity<UserResponseDTO> updateUser(
+      @PathVariable Long id, @Valid @RequestBody UserUpdateRequestDTO request) {
+    try {
+      return ResponseEntity.ok(userService.updateUser(id, request));
+    } catch (RuntimeException e) {
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.getUserById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    if (userService.getUserById(id).isEmpty()) {
+      return ResponseEntity.notFound().build();
     }
+    userService.deleteUser(id);
+    return ResponseEntity.noContent().build();
+  }
 }

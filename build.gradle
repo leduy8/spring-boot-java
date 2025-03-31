@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.diffplug.spotless' version '6.25.0'
+	id 'checkstyle'
 }
 
 group = 'com.leduy8'
@@ -42,6 +44,24 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+spotless {
+	java {
+		target 'src/**/*.java'
+		googleJavaFormat()  // Uses Google Java Format
+		importOrder()        // Organizes imports
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+}
+
+checkstyle {
+	toolVersion = '10.12.1' // Use the latest version
+	configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml") as Object
+	ignoreFailures = false  // Set to true if you don't want the build to fail on errors
+	showViolations = true   // Shows violations in the console
 }
 
 tasks.named('test') {

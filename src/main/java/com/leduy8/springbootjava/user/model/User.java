@@ -20,22 +20,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
+@Table(
+    name = "users",
+    uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User extends BaseEntity {
 
-    @Email
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    private String email;
+  @Email
+  @NotBlank
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @NotBlank
-    @Size(min = 4, max = 255)
-    @Column(nullable = false)
-    private String password;
+  @NotBlank
+  @Size(min = 4, max = 255)
+  @Column(nullable = false)
+  private String password;
 
-    @NotBlank
-    @Size(min = 2, max = 50)
-    private String name;
+  @NotBlank
+  @Size(min = 2, max = 50)
+  private String name;
 }
