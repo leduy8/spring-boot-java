@@ -33,13 +33,13 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserResponseDTO createUser(UserCreateRequestDTO request) {
-    final User user =
+    User user =
         User.builder()
             .name(request.name())
             .email(request.email())
             .password(passwordEncoder.encode(request.password()))
             .build();
-    userRepository.save(user);
+    user = userRepository.save(user);
     return UserResponseDTO.of(user, UserResponseDTO.class);
   }
 
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request) {
     return userRepository
-        .findById(id)
+        .findByIdAndIsDeletedFalse(id)
         .map(
             existingUser -> {
               existingUser.setName(request.name());
