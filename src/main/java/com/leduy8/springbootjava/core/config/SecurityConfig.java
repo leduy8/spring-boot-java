@@ -33,6 +33,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users")
                     .permitAll()
+                    .requestMatchers("/api/startup/**")
+                    .permitAll()
                     .anyRequest()
                     .authenticated())
         .sessionManagement(

@@ -3,19 +3,19 @@ spring:
     name: spring-boot-java
 
   datasource:
-    url: jdbc:postgresql://localhost:5444/springbootjavatest
-    username: postgres
-    password: 123456
-    # url: ${SPRING_DATASOURCE_URL}
-    # username: ${SPRING_DATASOURCE_USERNAME}
-    # password: ${SPRING_DATASOURCE_PASSWORD}
+#    url: jdbc:postgresql://localhost:5444/springbootjavatest
+#    username: postgres
+#    password: 123456
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
-      # ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
+#      ddl-auto: none
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
     show-sql: true
 
   flyway:

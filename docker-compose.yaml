@@ -1,0 +1,42 @@
+networks:
+  my_network:
+
+services:
+  db:
+    image: postgres:15
+    container_name: spring_boot_java_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  app:
+    image: gradle:8.12.1-jdk21
+    container_name: spring_boot_java_app
+    working_dir: /app
+    volumes:
+      - .:/app  # Mount current directory (host) into /app (container)
+      - gradle_cache:/home/gradle/.gradle  # Persist Gradle dependencies
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+    command: ["gradle", "bootRun"]
+
+volumes:
+  postgres_data:
+  gradle_cache: {}
